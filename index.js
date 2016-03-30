@@ -18,6 +18,56 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+/**
+ * Functions that are supported out of the box
+ */
+const bakedInFns = {
+    boolean(what) {
+        if(! what)
+            return false;
+
+        /* eslint-disable eqeqeq */
+        if( 'false' === what || 0 == what )
+            return false;
+        /* eslint-enable eqeqeq */
+
+        return true;
+    }
+};
+
 module.exports = bookshelf => {
+    const proto = bookshelf.Model.prototype;
+
+    bookshelf.Model = bookshelf.Model.extend({
+
+        parse(attrs) {
+            // Call parent
+            const parsed = proto.parse.call(this, attrs);
+            const casts = this.casts || {};
+            const keys = Object.keys( casts );
+
+                // Create pairs
+            keys.map( name => ({name, fn: casts[name]}) )
+                .map( def => {
+                    // Already a function? Pass
+                    if( 'function' === typeof def.fn )
+                        return def;
+
+                    // Something we provide? Use that.
+                    if( 'function' === typeof bakedInFns[def.fn] )
+                        return { name: def.name, fn: bakedInFns[def.fn]};
+
+                    throw new Error(`bookshelf-cast: don't know how to handle cast value ${def.fn}`);
+                })
+                .forEach( def => {
+                    // Call the cast function and update the model value
+                    parsed[def.name] = def.fn.call(this, parsed[def.name]);
+                });
+
+            return parsed;
+        }
+
+    });
 
 };
