@@ -1,5 +1,9 @@
 # bookshelf-cast
 
+![](https://travis-ci.org/dak0rn/bookshelf-cast.svg?branch=master)
+![](https://img.shields.io/badge/dependencies-none-green.svg)
+![](https://img.shields.io/badge/tested%20with-ava-blue.svg)
+
 This plugin for Bookshelf makes it easy to convert values fetched from a database.
 Custom or built-in cast functions for properties can be set in a `.casts` object
 in a model.
