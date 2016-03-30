@@ -44,7 +44,8 @@ test('parses truthy boolean value', t => {
         }
     });
 
-    return Model.forge().fetch({ id })
+
+    return Model.forge().where({ id }).fetch()
             .then( m => {
                 t.is( m.get('booleanValue'), true );
             });
@@ -59,7 +60,7 @@ test('parses falsy boolean value', t => {
         }
     });
 
-    return Model.forge().fetch({ id: id2 })
+    return Model.forge().where({ id: id2 }).fetch()
         .then( m => {
             t.is( m.get('booleanValue'), false);
         });
@@ -80,7 +81,7 @@ test('parses with custom functions', t => {
         }
     });
 
-    return Model.forge().fetch({ id })
+    return Model.forge().where({ id }).fetch()
         .then( m => {
             t.is( m.get('numberValue'), 12345);
             t.is( m.get('nonDb'), 42);
