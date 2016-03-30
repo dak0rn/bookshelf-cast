@@ -1,6 +1,6 @@
 {
   "name": "bookshelf-cast",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A plugin for Bookshelf that helps cast values",
   "main": "index.js",
   "scripts": {
