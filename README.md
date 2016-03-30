@@ -11,6 +11,7 @@ instance.
 
 ```javascript
 const bookshelf = new Bookshelf();
+
 bookshelf.plugin('bookshelf-cast');
 ```
 
