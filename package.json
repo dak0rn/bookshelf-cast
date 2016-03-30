@@ -1,0 +1,33 @@
+{
+  "name": "bookshelf-cast",
+  "version": "1.0.0",
+  "description": "A plugin for Bookshelf that helps cast values",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "ava"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dak0rn/bookshelf-cast.git"
+  },
+  "keywords": [
+    "bookshelf",
+    "orm"
+  ],
+  "author": "dak0rn",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/dak0rn/bookshelf-cast/issues"
+  },
+  "homepage": "https://github.com/dak0rn/bookshelf-cast#readme",
+  "devDependencies": {
+    "ava": "^0.13.0",
+    "bookshelf": "^0.9.2",
+    "knex": "^0.10.0",
+    "sinon": "^1.17.3",
+    "sqlite3": "^3.1.2"
+  }
+}
