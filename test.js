@@ -47,7 +47,7 @@ test('parses truthy boolean value', t => {
 
     return Model.forge().where({ id }).fetch()
             .then( m => {
-                t.is( m.get('booleanValue'), true );
+                t.true( m.get('booleanValue') );
             });
 });
 
@@ -62,7 +62,7 @@ test('parses falsy boolean value', t => {
 
     return Model.forge().where({ id: id2 }).fetch()
         .then( m => {
-            t.is( m.get('booleanValue'), false);
+            t.false( m.get('booleanValue') );
         });
 });
 
