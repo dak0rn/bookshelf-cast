@@ -3,9 +3,6 @@
   "version": "1.0.0",
   "description": "A plugin for Bookshelf that helps cast values",
   "main": "index.js",
-  "directories": {
-    "test": "test"
-  },
   "scripts": {
     "test": "ava"
   },
