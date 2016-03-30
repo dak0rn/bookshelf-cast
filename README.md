@@ -21,17 +21,19 @@ bookshelf.plugin('bookshelf-cast');
 
 ## Usage
 
-Configure the cast functions in the `.cast` object by using built-in identifiers or custom functions.
+Configure the cast functions in the `.casts` object by using built-in identifiers or custom functions.
 Each function is applied in the model context (`this` = model), passed the value and meant to return
 a value. Attributes that do not have a cast function assigned will be ignored.
 
 ```javascript
 const Model = bookshelf.Model.extend({
-    cast: {
+    casts: {
         booleanValue: 'boolean',
+
         numberValue(what) {
             return parseInt(what, 10);
         },
+
         notFourtyTwo() {
             return 42;
         }
