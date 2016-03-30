@@ -88,6 +88,18 @@ test('parses with custom functions', t => {
         });
 });
 
+test('ignores non-set attributes', t => {
+    const Model = orm.Model.extend({
+        tableName
+    });
+
+    return Model.forge().where({ id }).fetch()
+        .then( m => {
+            t.is( m.get('numberValue'), '12345');
+            t.is( m.get('booleanValue'), 1);
+        });
+});
+
 test('throws when non-built in function referenced', t => {
 
     const Model = orm.Model.extend({
