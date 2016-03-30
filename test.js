@@ -87,3 +87,37 @@ test('parses with custom functions', t => {
             t.is( m.get('nonDb'), 42);
         });
 });
+
+test('throws when non-built in function referenced', t => {
+
+    const Model = orm.Model.extend({
+        tableName,
+
+        casts: {
+            booleanValue: 'not-found'
+        }
+    });
+
+    return Model.forge().where({ id }).fetch()
+        .then( () => t.fail() )
+        .catch( err => {
+            t.is(err.message, 'bookshelf-cast: don\'t know how to handle cast value not-found');
+        });
+});
+
+test('throws when non-function and non-string cast given', t => {
+
+    const Model = orm.Model.extend({
+        tableName,
+
+        casts: {
+            booleanValue: 42
+        }
+    });
+
+    return Model.forge().where({ id }).fetch()
+        .then( () => t.fail() )
+        .catch( err => {
+            t.is(err.message, 'bookshelf-cast: don\'t know how to handle cast value 42');
+        });
+});
