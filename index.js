@@ -1,3 +1,5 @@
+'use strict';
+
 /**
  * bookshelf-cast
  *
@@ -47,23 +49,18 @@ module.exports = bookshelf => {
             const casts = this.casts || {};
             const keys = Object.keys( casts );
 
-                // Create pairs
-            keys.map( name => ({name, fn: casts[name]}) )
-                .map( def => {
-                    // Already a function? Pass
-                    if( 'function' === typeof def.fn )
-                        return def;
+            for( const key of keys ) {
+                const def = { name: key, fn: casts[key] };
 
-                    // Something we provide? Use that.
-                    if( 'function' === typeof bakedInFns[def.fn] )
-                        return { name: def.name, fn: bakedInFns[def.fn]};
-
+                // Something we provide? Use that.
+                if( 'function' === typeof bakedInFns[def.fn] )
+                    def.fn = bakedInFns[def.fn];
+                else if ('function' !== typeof def.fn)
                     throw new Error(`bookshelf-cast: don't know how to handle cast value ${def.fn}`);
-                })
-                .forEach( def => {
-                    // Call the cast function and update the model value
-                    parsed[def.name] = def.fn.call(this, parsed[def.name]);
-                });
+
+                // Call the cast function and update the model value
+                parsed[def.name] = def.fn.call(this, parsed[def.name]);
+            }
 
             return parsed;
         }
