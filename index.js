@@ -28,9 +28,7 @@ const bakedInFns = {
     boolean(what) {
         if (!what) return false;
 
-        /* eslint-disable eqeqeq */
         if ('false' === what || 0 == what) return false;
-        /* eslint-enable eqeqeq */
 
         return true;
     }
