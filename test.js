@@ -15,7 +15,8 @@ const db = knex({
     client: 'sqlite3',
     connection: {
         filename
-    }
+    },
+    useNullAsDefault: true
 });
 
 const orm = new Bookshelf(db);
