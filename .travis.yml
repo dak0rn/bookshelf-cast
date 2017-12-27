@@ -1,6 +1,9 @@
 language: node_js
 node_js:
-  - "node"
+  - '4'
+  - '6'
+  - '8'
+  - '9'
 install: npm install
 branches:
   only:
