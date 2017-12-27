@@ -1,0 +1,21 @@
+{
+    "parserOptions": {
+        "ecmaVersion": 2017,
+        "ecmaFeatures": {
+            "Set": true
+        }
+    },
+    "env": {
+        "node": true,
+        "browser": true,
+        "es6": true
+    },
+    "globals": {
+        "Promise": false
+    },
+    "extends": "eslint:recommended",
+    "rules": {
+        "prefer-const": "error",
+        "no-var": "error"
+    }
+}

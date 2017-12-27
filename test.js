@@ -19,20 +19,22 @@ const db = knex({
 });
 
 const orm = new Bookshelf(db);
-orm.plugin( bookshelfCast );
+orm.plugin(bookshelfCast);
 
 // Set up
-test.before( () => {
-
-    return db.schema.hasTable(tableName)
-            .then( has => has ? db.schema.dropTable(tableName) : null )
-            .then( () => db.schema.createTable(tableName, table => {
+test.before(() => {
+    return db.schema
+        .hasTable(tableName)
+        .then(has => (has ? db.schema.dropTable(tableName) : null))
+        .then(() =>
+            db.schema.createTable(tableName, table => {
                 table.string('id').primary();
                 table.integer('booleanValue');
                 table.string('numberValue');
-            }))
-            .then( () => db(tableName).insert({ booleanValue: 1, id, numberValue: '12345' }) )
-            .then( () => db(tableName).insert({ booleanValue: 0, id: id2, numberValue: '8' }) );
+            })
+        )
+        .then(() => db(tableName).insert({ booleanValue: 1, id, numberValue: '12345' }))
+        .then(() => db(tableName).insert({ booleanValue: 0, id: id2, numberValue: '8' }));
 });
 
 test('parses truthy boolean value', t => {
@@ -44,11 +46,12 @@ test('parses truthy boolean value', t => {
         }
     });
 
-
-    return Model.forge().where({ id }).fetch()
-            .then( m => {
-                t.true( m.get('booleanValue') );
-            });
+    return Model.forge()
+        .where({ id })
+        .fetch()
+        .then(m => {
+            t.true(m.get('booleanValue'));
+        });
 });
 
 test('parses falsy boolean value', t => {
@@ -60,9 +63,11 @@ test('parses falsy boolean value', t => {
         }
     });
 
-    return Model.forge().where({ id: id2 }).fetch()
-        .then( m => {
-            t.false( m.get('booleanValue') );
+    return Model.forge()
+        .where({ id: id2 })
+        .fetch()
+        .then(m => {
+            t.false(m.get('booleanValue'));
         });
 });
 
@@ -81,10 +86,12 @@ test('parses with custom functions', t => {
         }
     });
 
-    return Model.forge().where({ id }).fetch()
-        .then( m => {
-            t.is( m.get('numberValue'), 12345);
-            t.is( m.get('nonDb'), 42);
+    return Model.forge()
+        .where({ id })
+        .fetch()
+        .then(m => {
+            t.is(m.get('numberValue'), 12345);
+            t.is(m.get('nonDb'), 42);
         });
 });
 
@@ -93,15 +100,16 @@ test('ignores non-set attributes', t => {
         tableName
     });
 
-    return Model.forge().where({ id }).fetch()
-        .then( m => {
-            t.is( m.get('numberValue'), '12345');
-            t.is( m.get('booleanValue'), 1);
+    return Model.forge()
+        .where({ id })
+        .fetch()
+        .then(m => {
+            t.is(m.get('numberValue'), '12345');
+            t.is(m.get('booleanValue'), 1);
         });
 });
 
 test('throws when non-built in function referenced', t => {
-
     const Model = orm.Model.extend({
         tableName,
 
@@ -110,15 +118,16 @@ test('throws when non-built in function referenced', t => {
         }
     });
 
-    return Model.forge().where({ id }).fetch()
-        .then( () => t.fail() )
-        .catch( err => {
-            t.is(err.message, 'bookshelf-cast: don\'t know how to handle cast value not-found');
+    return Model.forge()
+        .where({ id })
+        .fetch()
+        .then(() => t.fail())
+        .catch(err => {
+            t.is(err.message, "bookshelf-cast: don't know how to handle cast value not-found");
         });
 });
 
 test('throws when non-function and non-string cast given', t => {
-
     const Model = orm.Model.extend({
         tableName,
 
@@ -127,9 +136,11 @@ test('throws when non-function and non-string cast given', t => {
         }
     });
 
-    return Model.forge().where({ id }).fetch()
-        .then( () => t.fail() )
-        .catch( err => {
-            t.is(err.message, 'bookshelf-cast: don\'t know how to handle cast value 42');
+    return Model.forge()
+        .where({ id })
+        .fetch()
+        .then(() => t.fail())
+        .catch(err => {
+            t.is(err.message, "bookshelf-cast: don't know how to handle cast value 42");
         });
 });

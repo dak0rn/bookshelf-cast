@@ -26,12 +26,10 @@
  */
 const bakedInFns = {
     boolean(what) {
-        if(! what)
-            return false;
+        if (!what) return false;
 
         /* eslint-disable eqeqeq */
-        if( 'false' === what || 0 == what )
-            return false;
+        if ('false' === what || 0 == what) return false;
         /* eslint-enable eqeqeq */
 
         return true;
@@ -42,19 +40,17 @@ module.exports = bookshelf => {
     const proto = bookshelf.Model.prototype;
 
     bookshelf.Model = bookshelf.Model.extend({
-
         parse(attrs) {
             // Call parent
             const parsed = proto.parse.call(this, attrs);
             const casts = this.casts || {};
-            const keys = Object.keys( casts );
+            const keys = Object.keys(casts);
 
-            for( const key of keys ) {
+            for (const key of keys) {
                 const def = { name: key, fn: casts[key] };
 
                 // Something we provide? Use that.
-                if( 'function' === typeof bakedInFns[def.fn] )
-                    def.fn = bakedInFns[def.fn];
+                if ('function' === typeof bakedInFns[def.fn]) def.fn = bakedInFns[def.fn];
                 else if ('function' !== typeof def.fn)
                     throw new Error(`bookshelf-cast: don't know how to handle cast value ${def.fn}`);
 
@@ -64,7 +60,5 @@ module.exports = bookshelf => {
 
             return parsed;
         }
-
     });
-
 };
