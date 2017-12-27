@@ -4,9 +4,9 @@
 ![](https://img.shields.io/badge/dependencies-none-green.svg)
 ![](https://img.shields.io/badge/tested%20with-ava-blue.svg)
 
-This plugin for Bookshelf makes it easy to convert values fetched from a database.
-Custom or built-in cast functions for properties can be set in a `.casts` object
-in a model.
+Plugin for Bookshelf that makes it easy to convert model values fetched from a database.
+Custom or built-in cast functions for properties can be set in a `casts` object
+on a model.
 
 ## Installation
 
@@ -21,17 +21,18 @@ bookshelf.plugin('bookshelf-cast');
 
 ## Usage
 
-Configure the cast functions in the `.casts` object by using built-in identifiers or custom functions.
+Configure the cast functions in the `casts` object by using built-in converters (see below) or custom functions.
 Each function is applied in the model context (`this` = model), passed the value and meant to return
 a value. Attributes that do not have a cast function assigned will be ignored.
 
 ```javascript
 const Model = bookshelf.Model.extend({
     casts: {
-        booleanValue: 'boolean',
+        // Property 'locked' will be converted into a boolean value
+        locked: 'boolean',
 
-        numberValue(what) {
-            return parseInt(what, 10);
+        age(dbValue) {
+            return parseInt(dbValue, 10);
         },
 
         notFourtyTwo() {
@@ -42,7 +43,9 @@ const Model = bookshelf.Model.extend({
 
 Model.forge().fetch('id', 91)
         .then( model => {
+            typeof modal.get('locked'); // 'boolean'
             model.get('notFourtyTwo');  // 42
+            typeof model.get('age'); // 'number'
         });
 ```
 
